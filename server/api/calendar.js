@@ -9,7 +9,7 @@ router.get("/api/calendar", async (req, res) => {
     util.validateQueryKey(req.query);
 
     const queryValue = util.sanitiseAndReturnQueryValue(
-      req.query["hostUsername"]
+      req.query["hostUserId"]
     );
 
     const slots = await db.calendar.findEventsForUser(queryValue);

@@ -91,17 +91,17 @@ function eventsAvailableInTheNextSevenDaysFromTomorrow(slots) {
  * and validates the key entered for the query.
  * returns void
  */
-const queryKeyName = "hostUsername";
+const queryKeyName = "hostUserId";
 
 function validateQueryKey(queryKey) {
   const queryKeyArray = Object.keys(queryKey);
-  const queryKeyName = "hostUsername";
+  const queryKeyName = "hostUserId";
   if (!queryKeyArray.length || queryKeyArray.length > 1) {
     throw new Error(`Please specify a single query key called ${queryKeyName}`);
   }
   if (
     queryKeyArray.length === 1 &&
-    queryKeyArray[0].trim() !== "hostUsername"
+    queryKeyArray[0].trim() !== "hostUserId"
   ) {
     throw new Error(
       `Please ensure the query key specified is called ${queryKeyName}`

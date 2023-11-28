@@ -10,9 +10,9 @@ app.use(router);
 describe("GET /api/calendar", () => {
   it("returns timeslots", async () => {
     const dateFormatRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
-    const hostUsername = "Eng Test User";
+    const hostUserId = "Eng Test User";
     const res = await request(app)
-      .get(`/api/calendar?hostUsername=${hostUsername}`)
+      .get(`/api/calendar?hostUserId=${hostUserId}`)
       .expect("Content-Type", /json/)
       .expect(200);
     expect(res.body.name).toBe("Eng Test User");
@@ -23,18 +23,18 @@ describe("GET /api/calendar", () => {
   });
 
   it("asserts that all returned slots do not exceed a time frame(9am-5pm)", async () => {
-    const hostUsername = "Eng Test User";
+    const hostUserId = "Eng Test User";
     const res = await request(app)
-      .get(`/api/calendar?hostUsername=${hostUsername}`)
+      .get(`/api/calendar?hostUserId=${hostUserId}`)
       .expect("Content-Type", /json/)
       .expect(200);
     expect(util.areAllTimeFramesValid(res.body.timeSlots)).toBe(true);
   });
 
   it("asserts that all returned slots are on the hour", async () => {
-    const hostUsername = "Eng Test User";
+    const hostUserId = "Eng Test User";
     const res = await request(app)
-      .get(`/api/calendar?hostUsername=${hostUsername}`)
+      .get(`/api/calendar?hostUserId=${hostUserId}`)
       .expect("Content-Type", /json/)
       .expect(200);
     res.body.timeSlots.forEach((slot) => {
@@ -44,9 +44,9 @@ describe("GET /api/calendar", () => {
 
   it("returns timeslots for another user", async () => {
     const dateFormatRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
-    const hostUsername = "q";
+    const hostUserId = "q";
     const res = await request(app)
-      .get(`/api/calendar?hostUsername=${hostUsername}`)
+      .get(`/api/calendar?hostUserId=${hostUserId}`)
       .expect("Content-Type", /json/)
       .expect(200);
     expect(res.body.name).toBe("q");
@@ -62,7 +62,7 @@ describe("GET /api/calendar", () => {
       .expect("Content-Type", /json/)
       .expect(400);
     expect(res.body).toBe(
-      "Please specify a single query key called hostUsername"
+      "Please specify a single query key called hostUserId"
     );
   });
 
@@ -72,15 +72,15 @@ describe("GET /api/calendar", () => {
       .expect("Content-Type", /json/)
       .expect(400);
     expect(res.body).toBe(
-      "Please ensure the query key specified is called hostUsername"
+      "Please ensure the query key specified is called hostUserId"
     );
   });
 
   it("returns an error if no value is specified for the query", async () => {
     const res = await request(app)
-      .get(`/api/calendar?hostUsername=`)
+      .get(`/api/calendar?hostUserId=`)
       .expect("Content-Type", /json/)
       .expect(400);
-    expect(res.body).toBe("Please specify a value for hostUsername");
+    expect(res.body).toBe("Please specify a value for hostUserId");
   });
 });
